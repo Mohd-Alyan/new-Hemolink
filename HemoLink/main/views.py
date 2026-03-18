@@ -610,3 +610,6 @@ def toggle_donor_availability(request):
     donor.save(update_fields=["is_available"])
     messages.success(request, f"You are now {'online' if donor.is_available else 'offline'}.")
     return redirect("donordashboard")
+
+def soon(request):
+    return render(request, "main/soon.html")

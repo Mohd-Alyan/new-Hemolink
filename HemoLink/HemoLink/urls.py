@@ -41,4 +41,5 @@ urlpatterns = [
     path('requests/<int:request_id>/respond/', views.respond_match, name='respond_match'),
     path('matches/<int:match_id>/select/', views.select_donor, name='select_donor'),
     path('requests/<int:request_id>/fulfilled/', views.mark_request_fulfilled, name='mark_request_fulfilled'),
+    path('soon/', views.soon, name='soon'),
 ]
