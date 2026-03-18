@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VitalSource | Requester Dashboard</title>
+<!-- Google Fonts: Inter & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#071e27",
+              "on-primary-container": "#fff2f0",
+              "tertiary-fixed-dim": "#b4cad6",
+              "on-tertiary-fixed-variant": "#354a53",
+              "on-background": "#191c1e",
+              "primary-container": "#d32f2f",
+              "surface-container-highest": "#e0e3e5",
+              "primary": "#af101a",
+              "error": "#ba1a1a",
+              "surface-container": "#eceef0",
+              "outline-variant": "#e4beba",
+              "secondary": "#4c56af",
+              "on-error-container": "#93000a",
+              "on-secondary-fixed": "#000767",
+              "surface-bright": "#f8f9fb",
+              "background": "#f8f9fb",
+              "on-tertiary": "#ffffff",
+              "primary-fixed-dim": "#ffb3ac",
+              "on-secondary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#e9f7ff",
+              "on-primary-fixed": "#410003",
+              "primary-fixed": "#ffdad6",
+              "outline": "#8f6f6c",
+              "tertiary-fixed": "#cfe6f2",
+              "tertiary-container": "#5e737d",
+              "on-error": "#ffffff",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary-container": "#27308a",
+              "inverse-surface": "#2d3133",
+              "surface-tint": "#ba1a20",
+              "on-surface": "#191c1e",
+              "on-secondary-fixed-variant": "#343d96",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e0e3e5",
+              "surface": "#f8f9fb",
+              "surface-container-high": "#e6e8ea",
+              "secondary-container": "#959efd",
+              "surface-container-low": "#f2f4f6",
+              "error-container": "#ffdad6",
+              "tertiary": "#455b65",
+              "secondary-fixed-dim": "#bdc2ff",
+              "on-primary-fixed-variant": "#930010",
+              "secondary-fixed": "#e0e0ff",
+              "surface-dim": "#d8dadc",
+              "on-surface-variant": "#5b403d",
+              "inverse-primary": "#ffb3ac"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      h1, h2, h3, .font-headline {
+        font-family: 'Inter', sans-serif;
+      }
+      .custom-glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .ambient-shadow {
+        box-shadow: 0 24px 40px -12px rgba(76, 86, 175, 0.06);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-fixed">
+<!-- TopNavBar Execution -->
+<header class="fixed top-0 z-50 w-full px-8 py-3 bg-surface/95 backdrop-blur border-b border-surface-container-high flex justify-between items-center transition-all">
+<span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+
+<div class="flex items-center gap-4 relative">
+
+<button class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-surface-container-high hover:shadow-md transition" id="profile-menu-btn" type="button">
+<img alt="Medical Staff Profile" class="w-full h-full object-cover" data-alt="Close up of a medical professional in scrubs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVTOtkdy9qXQIVxR64pGoJy-O4qVjZkv5HXgBlto1fkP3gTu3V0znbqCpTJkWJ8z-8m5NLbRim0bVYEdBps4YjoS4ZzRRube1l3c2YBbXRpl4dWcOSWqIzOaQzaVizxeMVREmMj5PJcjWI_zUeHmY24yl92NzJH6gys_1I4RZPb1h8XqexxoeMabWPOobweNa1zbtFXth37cqBRaSz6MDrpBNM0e_vBWBBfwwWx6kD_fSvuUmLwjl_JEgbAng8bPJBMqpgZuwOk6lH"/>
+</button>
+<div class="hidden absolute top-14 right-0 w-72 bg-surface-container-lowest rounded-xl shadow-xl border border-surface-container-high p-4 z-50" id="profile-menu">
+<p class="font-bold text-on-surface">{{ requester_org.organization_name }}</p>
+<p class="text-xs text-on-surface-variant mt-1">{{ request.user.email }}</p>
+<div class="mt-3 text-xs space-y-1 text-on-surface-variant">
+<p><span class="font-semibold">Role:</span> {{ user_profile.role|title }}</p>
+<p><span class="font-semibold">Type:</span> {{ requester_org.get_organization_type_display }}</p>
+<p><span class="font-semibold">Phone:</span> {{ user_profile.phone_number|default:"N/A" }}</p>
+<p><span class="font-semibold">Location:</span> {% if user_profile.latitude and user_profile.longitude %}{{ user_profile.latitude }}, {{ user_profile.longitude }}{% else %}N/A{% endif %}</p>
+</div>
+<a class="mt-4 block text-center bg-primary text-on-primary px-3 py-2 rounded-lg text-sm font-bold" href="{% url 'logout' %}">Log out</a>
+</div>
+</div>
+</header>
+<div class="flex pt-16">
+<!-- SideNavBar Execution -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low flex flex-col pt-20 hidden lg:flex">
+<div class="px-8 mb-10">
+<h2 class="text-xl font-bold text-primary font-headline">Requester Portal</h2>
+<p class="text-xs text-on-surface-variant font-manrope font-semibold tracking-wide uppercase">Blood Donation Network</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 text-primary bg-surface-container-lowest rounded-l-full ml-4 pl-4 py-3 font-bold transition-all" href="{% url 'requestordashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requester_status_tracking' %}">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-manrope">Status Tracking</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requester_inbox' %}">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-manrope">Inbox</span>
+</a>
+</nav>
+
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-72 p-8 min-h-screen">
+<div class="max-w-7xl mx-auto space-y-8">
+{% if messages %}
+{% for message in messages %}
+<div class="rounded-xl px-4 py-3 text-sm font-semibold {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-error-container text-on-error-container{% endif %}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+<!-- Hero / Top Section: Asymmetric Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+<!-- 1. Emergency Request Card -->
+<div class="xl:col-span-5 bg-primary rounded-xl p-8 text-on-primary relative overflow-hidden ambient-shadow h-full flex flex-col justify-between">
+<!-- Abstract pulse background pattern -->
+<div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-container rounded-full opacity-30"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4 bg-on-primary/10 w-fit px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">error</span> Priority Urgent
+                            </div>
+<h1 class="text-4xl font-extrabold font-headline leading-tight mb-4">Create Emergency Request</h1>
+<p class="text-on-primary-container text-lg opacity-90 max-w-sm font-body">Instantly notify the O-Negative network and local hospitals for immediate life-saving support.</p>
+</div>
+<form action="{% url 'create_blood_request' %}" class="relative z-10 mt-8 space-y-3" method="post">
+{% csrf_token %}
+<div class="grid grid-cols-2 gap-2">
+<select class="bg-surface-container-lowest text-primary px-3 py-2 rounded-lg text-sm font-bold" name="blood_type" required>
+<option value="">Blood</option>
+<option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+</select>
+<input class="bg-surface-container-lowest text-primary px-3 py-2 rounded-lg text-sm font-bold" min="1" name="units_required" placeholder="Units" required type="number"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<select class="bg-surface-container-lowest text-primary px-3 py-2 rounded-lg text-sm font-bold" name="priority" required>
+<option value="normal">Normal</option>
+<option value="high">High</option>
+<option value="urgent">Urgent</option>
+</select>
+<button class="bg-surface-container-lowest text-primary px-4 py-2 rounded-lg font-headline font-black text-sm hover:bg-surface-bright transition-all active:scale-95 shadow-sm" type="submit">Create Request</button>
+</div>
+<textarea class="w-full bg-surface-container-lowest text-primary px-3 py-2 rounded-lg text-sm" name="notes" placeholder="Notes (optional)" rows="2"></textarea>
+</form>
+</div>
+<!-- 2. Donor Map Preview Card -->
+<div class="xl:col-span-7 bg-surface-container-low rounded-xl overflow-hidden relative ambient-shadow h-full min-h-[400px]">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full" id="donor-network-preview-map"></div>
+</div>
+<div class="absolute bottom-6 left-6 right-6 custom-glass p-4 rounded-xl flex justify-between items-center z-10">
+<div>
+<h3 class="font-headline font-bold text-on-surface">Live Donor Network</h3>
+<p class="text-xs text-on-surface-variant font-medium">{{ network_donors|length }} eligible donors nearby</p>
+</div>
+<a class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2" href="{% url 'requester_donor_network' %}">
+<span class="material-symbols-outlined text-sm">map</span> Open Map
+</a>
+</div>
+</div>
+</div>
+<!-- Secondary Row: Active Requests & Available Donors -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- 3. Active Requests (Bento Style) -->
+<section class="lg:col-span-2 space-y-4">
+<div class="flex justify-between items-end mb-2 px-2">
+<h2 class="text-2xl font-extrabold font-headline">Active Requests</h2>
+<a class="text-primary text-sm font-bold hover:underline" href="#">View All History</a>
+</div>
+<div class="space-y-4">
+{% for req in blood_requests %}
+<div class="bg-surface-container-lowest rounded-xl p-6 ambient-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 border-l-4 border-primary border border-surface-container-high transition hover:-translate-y-0.5 hover:shadow-md">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="font-headline font-black text-xl">{{ req.blood_type }}</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">{{ req.requester.organization_name }}</h4>
+<p class="text-sm text-on-surface-variant">Request ID: #{{ req.id }} • {{ req.units_required }} Units</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 rounded-full text-xs font-bold {% if req.status == 'fulfilled' %}bg-green-100 text-green-800{% elif req.status == 'matched' %}bg-secondary-container text-on-secondary-container{% elif req.status == 'open' %}bg-error-container text-on-error-container{% else %}bg-surface-container-highest text-on-surface-variant{% endif %}">{{ req.status|title }}</span>
+{% if req.status != 'fulfilled' and req.status != 'cancelled' %}
+<form action="{% url 'mark_request_fulfilled' req.id %}" method="post">
+{% csrf_token %}
+<button class="bg-primary text-on-primary px-3 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition" type="submit">Mark Fulfilled</button>
+</form>
+{% endif %}
+</div>
+</div>
+{% empty %}
+<div class="bg-surface-container-lowest rounded-xl p-6 text-on-surface-variant">No requests yet. Create your first one from the emergency card.</div>
+{% endfor %}
+</div>
+</section>
+<!-- 4. Available Donors Quick Summary -->
+<section class="space-y-4">
+<div class="flex justify-between items-end mb-2 px-2">
+<h2 class="text-2xl font-extrabold font-headline">Available Donors</h2>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 h-full flex flex-col gap-4">
+{% for donor in nearest_donors %}
+<details class="group bg-surface-container-lowest rounded-xl p-4 border border-surface-container-high transition hover:-translate-y-0.5 hover:shadow-md">
+<summary class="list-none cursor-pointer flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-on-surface">{{ donor.full_name }}</p>
+<p class="text-xs text-on-surface-variant">{% if donor.distance_km is not None %}{{ donor.distance_km }} km away • {% endif %}Type {{ donor.blood_type }}</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 mt-3 border-t border-surface-container-high text-xs text-on-surface-variant space-y-1">
+<p><span class="font-semibold text-on-surface">Age:</span> {{ donor.age }}</p>
+<p><span class="font-semibold text-on-surface">Weight:</span> {{ donor.weight_kg }} kg</p>
+<p><span class="font-semibold text-on-surface">Phone:</span> {{ donor.phone }}</p>
+<p><span class="font-semibold text-on-surface">Email:</span> {{ donor.email }}</p>
+</div>
+</details>
+{% empty %}
+<div class="bg-surface-container-lowest rounded-xl p-4 text-sm text-on-surface-variant">No online and eligible donors with location found.</div>
+{% endfor %}
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation Shell (BottomNavBar Fallback) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface py-3 px-6 flex justify-around items-center z-50 ambient-shadow">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="text-[10px] font-medium">Tracking</span>
+</a>
+<div class="relative -top-6">
+<button class="bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="text-[10px] font-medium">Inbox</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+{{ network_donors|json_script:"network-donors-data" }}
+{{ network_center|json_script:"network-center-data" }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const profileBtn = document.getElementById("profile-menu-btn");
+const profileMenu = document.getElementById("profile-menu");
+if (profileBtn && profileMenu) {
+  profileBtn.addEventListener("click", function () {
+    profileMenu.classList.toggle("hidden");
+  });
+  document.addEventListener("click", function (event) {
+    if (!profileMenu.contains(event.target) && !profileBtn.contains(event.target)) {
+      profileMenu.classList.add("hidden");
+    }
+  });
+}
+const previewMapEl = document.getElementById("donor-network-preview-map");
+if (previewMapEl) {
+  const donors = JSON.parse(document.getElementById("network-donors-data").textContent);
+  const center = JSON.parse(document.getElementById("network-center-data").textContent);
+  const previewMap = L.map("donor-network-preview-map", { zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, tap: false, attributionControl: false });
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { subdomains: "abcd" }).addTo(previewMap);
+  previewMap.setView([center.lat, center.lng], 11);
+  L.circleMarker([center.lat, center.lng], { radius: 7, color: "#4c56af", fillColor: "#4c56af", fillOpacity: 1 }).addTo(previewMap);
+  donors.slice(0, 40).forEach((donor) => {
+    L.circleMarker([donor.latitude, donor.longitude], { radius: 6, color: "#af101a", fillColor: "#af101a", fillOpacity: 0.9 }).addTo(previewMap);
+  });
+}
+</script>
+</body></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Donor Inbox</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config={theme:{extend:{colors:{surface:"#f8f9fb","on-surface":"#191c1e","surface-container-low":"#f2f4f6","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3e5","primary":"#af101a","on-primary":"#ffffff","on-surface-variant":"#5b403d"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>.inbox-card{transition:transform .2s ease,box-shadow .2s ease}.inbox-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(76,86,175,.4)}</style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen font-body">
+<aside class="hidden md:flex flex-col gap-y-2 py-8 pr-4 h-screen w-72 fixed left-0 top-0 bg-surface-container-low z-40">
+<div class="px-8 mb-10"><span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span><p class="text-xs font-semibold text-on-surface-variant tracking-wider uppercase opacity-70">Medical Network</p></div>
+<nav class="flex flex-col gap-y-1">
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donordashboard' %}"><span class="material-symbols-outlined">grid_view</span><span class="font-manrope text-base font-medium">Dashboard</span></a>
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donor_requests' %}"><span class="material-symbols-outlined">bloodtype</span><span class="font-manrope text-base font-medium">Requests</span></a>
+<a class="text-primary font-bold bg-surface-container-highest rounded-r-full py-3 px-6 mr-4 flex items-center gap-4 transition-all duration-200 translate-x-1" href="{% url 'donor_inbox' %}"><span class="material-symbols-outlined">mail</span><span class="font-manrope text-base font-medium">Inbox</span></a>
+</nav>
+</aside>
+<div class="flex-1 md:ml-72 p-8">
+<h2 class="text-3xl font-headline font-black mb-6">Inbox</h2>
+<div class="space-y-4">
+{% for note in inbox_notifications %}
+<div class="inbox-card {% if 'URGENT:' in note.message %}bg-red-50 border border-red-200{% else %}bg-surface-container-lowest border border-surface-container-high{% endif %} rounded-2xl p-5">
+{% if 'URGENT:' in note.message %}<span class="inline-block mb-2 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-100 text-red-700">Urgent</span>{% endif %}
+<p class="font-semibold {% if 'URGENT:' in note.message %}text-red-700{% else %}text-on-surface{% endif %}">{{ note.message }}</p>
+<p class="text-xs text-on-surface-variant mt-2">{{ note.created_at }}</p>
+</div>
+{% empty %}
+<div class="bg-surface-container-lowest rounded-2xl p-5 text-on-surface-variant">No notifications yet.</div>
+{% endfor %}
+</div>
+</div>
+</body></html>

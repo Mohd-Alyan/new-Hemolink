@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meet the Team | Vital Pulse</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#f8f9fb",
+              "on-tertiary-fixed-variant": "#354a53",
+              "inverse-surface": "#2d3133",
+              "on-error": "#ffffff",
+              "surface-container-high": "#e6e8ea",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#bdc2ff",
+              "inverse-on-surface": "#eff1f3",
+              "error": "#ba1a1a",
+              "surface-container-low": "#f2f4f6",
+              "background": "#f8f9fb",
+              "outline": "#8f6f6c",
+              "error-container": "#ffdad6",
+              "on-error-container": "#93000a",
+              "surface-variant": "#e0e3e5",
+              "primary-fixed-dim": "#ffb3ac",
+              "tertiary-fixed": "#cfe6f2",
+              "on-surface": "#191c1e",
+              "inverse-primary": "#ffb3ac",
+              "secondary": "#4c56af",
+              "on-tertiary-fixed": "#071e27",
+              "primary-container": "#d32f2f",
+              "surface-container-highest": "#e0e3e5",
+              "on-tertiary-container": "#e9f7ff",
+              "surface-container": "#eceef0",
+              "on-secondary-fixed-variant": "#343d96",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#ba1a20",
+              "tertiary-fixed-dim": "#b4cad6",
+              "primary": "#af101a",
+              "on-primary-fixed": "#410003",
+              "on-primary-container": "#fff2f0",
+              "tertiary-container": "#5e737d",
+              "tertiary": "#455b65",
+              "surface": "#f8f9fb",
+              "on-surface-variant": "#5b403d",
+              "outline-variant": "#e4beba",
+              "surface-dim": "#d8dadc",
+              "on-secondary-container": "#27308a",
+              "on-secondary-fixed": "#000767",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed-variant": "#930010",
+              "on-background": "#191c1e",
+              "on-primary": "#ffffff",
+              "secondary-fixed": "#e0e0ff",
+              "secondary-container": "#959efd",
+              "primary-fixed": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .pulse-bg {
+            background: radial-gradient(circle at 50% 50%, rgba(175, 16, 26, 0.05) 0%, transparent 70%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-on-scroll {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/20">
+<!-- TopNavBar -->
+<header class="w-full py-6 px-12 flex items-center justify-between"></header>
+<!-- Ambient Pulse Background -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[1000px] pulse-bg -z-10 pointer-events-none"></div>
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 mb-24">
+<div class="max-w-3xl">
+<h1 class="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter text-on-surface leading-[0.9] mb-8">
+                    The Minds <span class="text-primary italic">Behind</span> HemoLink.
+                </h1>
+</div>
+</section>
+<!-- Team Grid -->
+<section class="max-w-7xl mx-auto px-8 mb-32">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Member Card 1 -->
+<div class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden glass-card shadow-2xl transition-transform duration-500 hover:-translate-y-4">
+<img alt="" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" data-alt="Portrait of professional medical director in clinical setting" src="{% static 'main/about1.jpg' %}"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full text-white">
+<h3 class="font-headline text-3xl font-extrabold mb-2">Mohd Alyan</h3>
+<div class="flex gap-4">
+</div>
+</div>
+</div>
+<!-- Member Card 2 -->
+<div class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden glass-card shadow-2xl transition-transform duration-500 hover:-translate-y-4">
+<img alt="" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" data-alt="Portrait of chief technology officer in modern office" src="{% static 'main/about2.jpg' %}"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full text-white">
+<h3 class="font-headline text-3xl font-extrabold mb-2">Ifra Naseem Baig</h3>
+<div class="flex gap-4">
+</div>
+</div>
+</div>
+<!-- Member Card 3 -->
+<div class="group relative aspect-[4/5] rounded-[2rem] overflow-hidden glass-card shadow-2xl transition-transform duration-500 hover:-translate-y-4">
+<img alt="" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" data-alt="Portrait of operations executive in sleek environment" src="{% static 'main/about3.jpg' %}"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full text-white">
+<h3 class="font-headline text-3xl font-extrabold mb-2">Mohd Ashab</h3>
+<div class="flex gap-4">
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Our Philosophy (Text Heavy / Bento Blend) -->
+<section class="max-w-7xl mx-auto px-8 mb-32">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+<div class="sticky top-32">
+<h2 class="font-headline text-5xl font-extrabold tracking-tight mb-6">Our Philosophy</h2>
+<div class="w-24 h-1 bg-primary mb-8"></div>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-6 italic">
+                        "At Vital Pulse, we believe every heartbeat is a testament to shared humanity. Our network isn't just about blood; it's about the invisible threads of connection that sustain us."
+                    </p>
+</div>
+<div class="space-y-12">
+<div>
+<h4 class="font-headline text-xl font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">verified</span> Precision Care
+                        </h4>
+<p class="text-on-surface-variant leading-relaxed">
+                            We deploy state-of-the-art screening and preservation technologies. Our medical board ensures that every pint of blood is processed with surgical precision, maintaining the highest integrity from arm to arm.
+                        </p>
+</div>
+<div>
+<h4 class="font-headline text-xl font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">hub</span> Radical Accessibility
+                        </h4>
+<p class="text-on-surface-variant leading-relaxed">
+                            Technology should remove barriers, not create them. Our integrated digital platform allows for instant appointment booking, real-time supply tracking, and personalized health insights for every donor.
+                        </p>
+</div>
+<div>
+<h4 class="font-headline text-xl font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">volunteer_activism</span> Human Stewardship
+                        </h4>
+<p class="text-on-surface-variant leading-relaxed">
+                            We recognize the profound gift of donation. Our team is dedicated to providing a premium, comfortable, and celebratory environment for donors, treating every individual as a vital partner in our mission.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full rounded-t-[2.5rem] mt-12 bg-surface-container-low">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 px-12 py-16 max-w-7xl mx-auto">
+<div>
+<span class="inline-block text-2xl font-extrabold tracking-tight text-primary mb-6">HemoLink</span>
+<p class="font-inter text-xs tracking-normal leading-relaxed text-on-surface-variant">
+                    © 2024 Vital Pulse Medical Network. Saving lives through the Vital Pulse.
+                </p>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-bold text-sm uppercase tracking-widest text-on-surface mb-2">Legal</h5>
+<a class="font-inter text-xs text-on-surface-variant hover:text-secondary hover:opacity-80 transition-all underline-offset-4 hover:underline" href="#">Medical Privacy</a>
+<a class="font-inter text-xs text-on-surface-variant hover:text-secondary hover:opacity-80 transition-all underline-offset-4 hover:underline" href="#">Donor Rights</a>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-bold text-sm uppercase tracking-widest text-on-surface mb-2">Standards</h5>
+<a class="font-inter text-xs text-on-surface-variant hover:text-secondary hover:opacity-80 transition-all underline-offset-4 hover:underline" href="#">Terms of Excellence</a>
+<a class="font-inter text-xs text-on-surface-variant hover:text-secondary hover:opacity-80 transition-all underline-offset-4 hover:underline" href="#">Partner Logins</a>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-bold text-sm uppercase tracking-widest text-on-surface mb-2">Social</h5>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">share</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">favorite</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+const revealItems = document.querySelectorAll("section, footer, .glass-card");
+revealItems.forEach((el) => el.classList.add("reveal-on-scroll"));
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+  revealItems.forEach((el) => revealObserver.observe(el));
+} else {
+  revealItems.forEach((el) => el.classList.add("revealed"));
+}
+</script>
+</body></html>

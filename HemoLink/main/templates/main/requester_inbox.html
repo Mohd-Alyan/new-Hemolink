@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VitalSource | Requester Inbox</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config={theme:{extend:{colors:{background:"#f8f9fb","on-background":"#191c1e","surface-container-low":"#f2f4f6","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3e5","primary":"#af101a","on-primary":"#ffffff","on-surface":"#191c1e","on-surface-variant":"#5b403d"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>.inbox-card{transition:transform .2s ease,box-shadow .2s ease}.inbox-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(76,86,175,.4)}</style>
+</head>
+<body class="bg-background text-on-background">
+<div class="flex pt-4">
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low flex flex-col pt-20 hidden lg:flex">
+<div class="px-8 mb-10"><h2 class="text-xl font-bold text-primary font-headline">Requester Portal</h2><p class="text-xs text-on-surface-variant font-manrope font-semibold tracking-wide uppercase">Blood Donation Network</p></div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requestordashboard' %}"><span class="material-symbols-outlined">dashboard</span><span class="font-manrope">Dashboard</span></a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requester_status_tracking' %}"><span class="material-symbols-outlined">timeline</span><span class="font-manrope">Status Tracking</span></a>
+<a class="flex items-center gap-4 text-primary bg-surface-container-lowest rounded-l-full ml-4 pl-4 py-3 font-bold transition-all" href="{% url 'requester_inbox' %}"><span class="material-symbols-outlined">mail</span><span class="font-manrope">Inbox</span></a>
+</nav>
+</aside>
+<main class="flex-1 lg:ml-72 p-8">
+<h2 class="text-3xl font-headline font-black mb-6">Inbox</h2>
+<div class="space-y-4">
+{% for note in inbox_notifications %}
+<div class="inbox-card {% if 'URGENT:' in note.message %}bg-red-50 border border-red-200{% else %}bg-surface-container-low border border-surface-container-high{% endif %} rounded-xl p-4">
+{% if 'URGENT:' in note.message %}<span class="inline-block mb-2 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-100 text-red-700">Urgent</span>{% endif %}
+<p class="font-semibold {% if 'URGENT:' in note.message %}text-red-700{% else %}text-on-surface{% endif %}">{{ note.message }}</p>
+<p class="text-xs text-on-surface-variant mt-2">{{ note.created_at }}</p>
+</div>
+{% empty %}
+<div class="bg-surface-container-low rounded-xl p-4 text-on-surface-variant">No notifications yet.</div>
+{% endfor %}
+</div>
+</main>
+</div>
+</body></html>

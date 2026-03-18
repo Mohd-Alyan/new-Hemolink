@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#ba1a20",
+                        "secondary": "#4c56af",
+                        "on-secondary-fixed-variant": "#343d96",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eceef0",
+                        "surface-bright": "#f8f9fb",
+                        "primary-container": "#d32f2f",
+                        "tertiary": "#455b65",
+                        "surface-container-low": "#f2f4f6",
+                        "on-primary-container": "#fff2f0",
+                        "surface": "#f8f9fb",
+                        "secondary-fixed-dim": "#bdc2ff",
+                        "secondary-fixed": "#e0e0ff",
+                        "primary": "#af101a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "outline": "#8f6f6c",
+                        "on-secondary-container": "#27308a",
+                        "surface-container-highest": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "tertiary-fixed-dim": "#b4cad6",
+                        "on-tertiary-fixed": "#071e27",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#5e737d",
+                        "error-container": "#ffdad6",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed-variant": "#930010",
+                        "inverse-primary": "#ffb3ac",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-fixed": "#000767",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#959efd",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-container": "#e9f7ff",
+                        "on-surface": "#191c1e",
+                        "tertiary-fixed": "#cfe6f2",
+                        "primary-fixed-dim": "#ffb3ac",
+                        "primary-fixed": "#ffdad6",
+                        "background": "#f8f9fb",
+                        "on-surface-variant": "#5b403d",
+                        "on-primary-fixed": "#410003",
+                        "outline-variant": "#e4beba",
+                        "on-tertiary-fixed-variant": "#354a53"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .font-manrope {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+    .input-group:focus-within .material-symbols-outlined {
+        transform: scale(1.15);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .input-field:focus {
+        box-shadow: 0 0 15px -3px rgba(175, 16, 26, 0.15);
+    }
+    .input-group .material-symbols-outlined {
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .soft-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .soft-lift:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px -16px rgba(175, 16, 26, 0.55);
+    }
+</style></head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- Note: TopNavBar suppressed for Login focused journey as per Semantic Shell Mandate -->
+<main class="flex-grow flex items-center justify-center px-6 py-12 relative overflow-hidden">
+<!-- Ambient Decorative Background Elements -->
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+<div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-secondary rounded-full blur-[120px]"></div>
+</div>
+<div class="w-full max-w-md relative z-10">
+<!-- Glassmorphism Login Card -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl rounded-[1.5rem] p-8 md:p-12 shadow-2xl shadow-secondary/5 border border-white/20">
+<!-- Brand Anchor -->
+<div class="flex flex-col items-center mb-10">
+<div class="mb-4 flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full">
+<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">pulse_alert</span>
+</div>
+<span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+<p class="text-on-surface-variant mt-2 text-sm font-medium">Medical Network Portal</p>
+</div>
+<!-- Login Form -->
+{% if error %}
+<div class="mb-4 rounded-lg bg-error-container text-on-error-container px-4 py-3 text-sm font-semibold">{{ error }}</div>
+{% endif %}
+<form class="space-y-6" method="post">
+{% csrf_token %}
+<div class="space-y-1.5">
+<label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1 font-label" for="identifier">Email or Phone Number</label>
+<div class="relative group input-group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant/60 text-xl group-focus-within:text-primary transition-colors">person</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-4 bg-surface-container-low border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 rounded-xl transition-all placeholder:text-on-surface-variant/40 text-on-surface font-body input-field" id="identifier" name="identifier" placeholder="Email or Phone Number" type="text"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center px-1">
+<label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant font-label" for="password">Password</label>
+<a class="text-[10px] font-bold text-primary hover:underline uppercase tracking-tighter" href="#">Forgot?</a>
+</div>
+<div class="relative group input-group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant/60 text-xl group-focus-within:text-primary transition-colors">lock</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-4 bg-surface-container-low border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 rounded-xl transition-all placeholder:text-on-surface-variant/40 text-on-surface font-body input-field" id="password" name="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<button class="soft-lift w-full bg-primary text-on-primary font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-8" type="submit">
+<span>Login</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</form>
+<!-- Footer Action -->
+<div class="mt-10 text-center">
+<p class="text-on-surface-variant text-sm font-medium">Don't have an account?</p>
+<a class="inline-block mt-2 text-primary font-bold hover:underline decoration-2 underline-offset-4 transition-all" href="{% url 'register' %}">Register first</a>
+</div>
+</div>
+<!-- Security Trust Badges -->
+<div class="mt-8 flex justify-center items-center gap-6 opacity-40">
+<div class="flex items-center gap-1.5 grayscale">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Encrypted</span>
+</div>
+<div class="flex items-center gap-1.5 grayscale">
+<span class="material-symbols-outlined text-sm">medical_services</span>
+<span class="text-[10px] font-bold tracking-widest uppercase">HIPAA Compliant</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer as per Shared Components JSON -->
+<footer class="bg-surface-container-low full-width rounded-t-[1.5rem] mt-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 px-8 py-16 max-w-7xl mx-auto">
+<div>
+<span class="inline-block text-2xl font-extrabold tracking-tight text-primary mb-4">HemoLink</span>
+<p class="text-on-surface-variant text-sm leading-relaxed max-w-xs font-body">
+                    © 2024 Vital Pulse Medical Network. All rights reserved. Saving lives through seamless donation.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-8 md:col-span-2">
+<div>
+<h3 class="font-manrope text-sm font-bold uppercase tracking-widest text-on-surface mb-6">Quick Links</h3>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant text-sm hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all font-label" href="#">Donor FAQ</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all font-label" href="#">Contact Us</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all font-label" href="#">Emergency Protocols</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-manrope text-sm font-bold uppercase tracking-widest text-on-surface mb-6">Legal</h3>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant text-sm hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all font-label" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all font-label" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

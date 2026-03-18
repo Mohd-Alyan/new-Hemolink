@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VitalPulse | Join the Network</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-role {
+            border: 2px solid #af101a;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(175, 16, 26, 0.1);
+        }
+        input:focus, select:focus, textarea:focus {
+            box-shadow: 0 0 0 2px rgba(175, 16, 26, 0.2) !important;
+        }
+        .soft-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .soft-lift:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 20px -16px rgba(175, 16, 26, 0.55);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-container-low": "#f2f4f6",
+                "on-secondary-container": "#27308a",
+                "primary": "#af101a",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed-variant": "#930010",
+                "error": "#ba1a1a",
+                "on-surface-variant": "#5b403d",
+                "secondary-fixed-dim": "#bdc2ff",
+                "secondary": "#4c56af",
+                "background": "#f8f9fb",
+                "outline": "#8f6f6c",
+                "surface-container": "#eceef0",
+                "on-tertiary-fixed-variant": "#354a53",
+                "inverse-surface": "#2d3133",
+                "primary-container": "#d32f2f",
+                "tertiary-fixed-dim": "#b4cad6",
+                "surface-container-high": "#e6e8ea",
+                "primary-fixed": "#ffdad6",
+                "surface-tint": "#ba1a20",
+                "on-primary": "#ffffff",
+                "on-secondary-fixed": "#000767",
+                "surface-bright": "#f8f9fb",
+                "inverse-on-surface": "#eff1f3",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "tertiary-container": "#5e737d",
+                "primary-fixed-dim": "#ffb3ac",
+                "on-primary-fixed": "#410003",
+                "surface-variant": "#e0e3e5",
+                "tertiary-fixed": "#cfe6f2",
+                "on-background": "#191c1e",
+                "on-tertiary-fixed": "#071e27",
+                "secondary-container": "#959efd",
+                "secondary-fixed": "#e0e0ff",
+                "outline-variant": "#e4beba",
+                "on-primary-container": "#fff2f0",
+                "surface": "#f8f9fb",
+                "on-secondary-fixed-variant": "#343d96",
+                "tertiary": "#455b65",
+                "on-tertiary": "#ffffff",
+                "on-surface": "#191c1e",
+                "inverse-primary": "#ffb3ac",
+                "surface-dim": "#d8dadc",
+                "on-error": "#ffffff",
+                "surface-container-highest": "#e0e3e5",
+                "on-tertiary-container": "#e9f7ff",
+                "surface-container-lowest": "#ffffff"
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-on-surface">
+<!-- Header / Brand Anchor -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-6 bg-surface/80 backdrop-blur-xl">
+<span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+<div class="flex gap-6 items-center">
+<span class="text-on-surface-variant font-medium font-label">Already have an account?</span>
+<a href="{% url 'login' %}">
+<button class="soft-lift text-primary font-bold hover:text-primary-container transition-colors duration-300">Login</button>
+</a>
+</div>
+</nav>
+<main class="min-h-screen pt-24 lg:pt-0 flex flex-col lg:flex-row">
+<!-- Left Side: Role Selection & Inspiration -->
+<section class="lg:w-5/12 xl:w-1/2 relative flex flex-col justify-center px-8 md:px-16 py-12 lg:py-24 bg-surface-container-low">
+<div class="max-w-xl">
+<h1 class="font-headline text-4xl lg:text-5xl font-extrabold text-on-surface tracking-tight leading-tight mb-6">
+                    Join the life-saving <span class="text-primary">network.</span>
+</h1>
+<p class="text-on-surface-variant text-lg mb-12 max-w-md">
+                    Choose your role in our ecosystem. Whether you are giving the gift of life or seeking it, your presence matters.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Donor Card -->
+<div class="group cursor-pointer p-8 rounded-xl bg-surface-container-lowest border-2 border-transparent transition-all duration-300 active-role hover:shadow-xl" id="role-donor" onclick="selectRole('donor')">
+<div class="w-12 h-12 bg-primary-fixed rounded-lg flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">bloodtype</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-2">Donor</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+                            I want to donate blood and save lives in my community.
+                        </p>
+<div class="flex items-center gap-2 text-primary font-bold text-sm donor-indicator">
+<span>Selected</span>
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div class="hidden items-center gap-2 text-on-surface-variant font-semibold text-sm opacity-50 donor-default">
+<span>Select Role</span>
+</div>
+</div>
+<!-- Requester Card -->
+<div class="group cursor-pointer p-8 rounded-xl bg-surface-container-lowest border-2 border-transparent transition-all duration-300 hover:border-outline-variant hover:shadow-lg" id="role-requester" onclick="selectRole('requester')">
+<div class="w-12 h-12 bg-secondary-fixed rounded-lg flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-2">Requester</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+                            I am representing a hospital or a blood bank in urgent need.
+                        </p>
+<div class="flex items-center gap-2 text-on-surface-variant font-semibold text-sm opacity-50 requester-default">
+<span>Select Role</span>
+</div>
+<div class="hidden items-center gap-2 text-primary font-bold text-sm requester-indicator">
+<span>Selected</span>
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Visual Inspiration Section -->
+<div class="mt-16 relative rounded-2xl overflow-hidden aspect-[16/9] shadow-2xl">
+<img alt="Medical personnel and equipment" class="w-full h-full object-cover" data-alt="Professional medical laboratory setting with clean equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuJ1BC2g_BcqSys4uvLEdkOp2d1gfb2srQjPOXVC8kyJRQys-R1ODDGhMfEAuLhh-gqqrrEKYuu_b82u7p2MHfj_3i3K25z_Lvakjq_vMZZXah88et0SO5t_O5f_JM15FKnu2N-vR8XArOUhaa5Dk3OXec2bB_vTbNE-Dnxm8s6MI3NCDhq5abWKKA4Ng0UH-iMg_Glbr0zu-z6QkgcjYSdJbJL0eMXqeXg1Ezw8EqTYJRJBWWi0REQBaEKhvseLnAoMLRfBgj7uuB"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="bg-surface/90 backdrop-blur-md p-4 rounded-xl flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-primary">Live Impact</p>
+<p class="text-sm font-semibold">1,240+ Units matched this week</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: Registration Form -->
+<section class="lg:w-7/12 xl:w-1/2 flex items-center justify-center px-8 md:px-16 py-12 lg:py-24 bg-surface">
+<div class="w-full max-w-lg">
+<div class="mb-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold mb-4 uppercase tracking-widest">
+                        Registration
+                    </div>
+<h2 class="font-headline text-3xl font-extrabold mb-2" id="form-title">Complete your profile</h2>
+<p class="text-on-surface-variant" id="form-subtitle">Fill in the clinical details to join the VitalPulse network.</p>
+</div>
+<!-- Main Form -->
+{% if error %}
+<div class="mb-4 rounded-lg bg-error-container text-on-error-container px-4 py-3 text-sm font-semibold">{{ error }}</div>
+{% endif %}
+<form class="space-y-6" id="registration-form" method="post">
+{% csrf_token %}
+<input id="role-input" name="role" type="hidden" value="donor"/>
+<input id="latitude-input" name="latitude" type="hidden"/>
+<input id="longitude-input" name="longitude" type="hidden"/>
+<div class="space-y-6" id="form-fields-container">
+<!-- Fields injected by JS -->
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label text-sm font-semibold text-on-surface-variant">Password</label>
+<input name="password" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="********" type="password"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-sm font-semibold text-on-surface-variant">Confirm Password</label>
+<input name="confirm_password" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="********" type="password"/>
+</div>
+</div>
+<!-- Geolocation Button (Constant) -->
+<div class="p-6 rounded-xl bg-surface-container-low border-dashed border-2 border-outline-variant flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm mb-4">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<h4 class="font-bold mb-1">Precise Location</h4>
+<p class="text-xs text-on-surface-variant mb-4 px-8">We use your live location to match you with nearby donors or recipients instantly.</p>
+<button class="soft-lift bg-white text-on-surface border border-outline-variant px-6 py-2 rounded-lg font-bold text-sm hover:bg-surface-container-highest transition-colors flex items-center gap-2" id="get-location-btn" type="button">
+                            Get My Live Location
+                        </button>
+<p class="text-xs mt-3 text-on-surface-variant" id="location-status">Location not captured yet.</p>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 rounded text-primary focus:ring-primary border-outline-variant" id="terms" required="" type="checkbox"/>
+<label class="text-xs text-on-surface-variant leading-relaxed" for="terms">
+                            By clicking, I agree to the VitalPulse <a class="text-primary font-bold" href="#">Privacy Policy</a> and <a class="text-primary font-bold" href="#">Terms of Service</a> regarding medical data sharing.
+                        </label>
+</div>
+<button class="soft-lift w-full bg-primary text-on-primary py-4 rounded-lg font-bold text-lg transition-all hover:bg-primary-container shadow-xl shadow-primary/20 active:scale-[0.98]" type="submit">
+                        Complete Registration
+                    </button>
+</form>
+<div class="mt-12 flex items-center justify-center gap-8 opacity-40 grayscale">
+<img alt="Hospital Logo 1" class="h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGdoY2Nfm12EVn0-lvYe3TQPunfTbFt7wn6uO6C0B-AusO4adO3FLFSBjMnqlIjHgq97GPLL8RQs6FUjLQq2i9uwT9XZ7Mxd_P80BrbYM4gCAQcw4kvfnV3kGtd8dJMfy3VonpyBRtTbRQEHFXujYeCL2I8yWgk0ojVrurXvdmDEYn9m_6zKpj0Pc1WwcJf3guq2DL36yInwOtRS3eygYbl4qW7Qiuo-s7bclXtAKpSDQes6W6TsVrVMkbOhLYlFkI5mr8h7CRmS4C"/>
+<img alt="Hospital Logo 2" class="h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHohRau8cy_x58iyCYAT95uTcmzf2cmMSPIx7kFwcD8aSXsUIP4UIwdnnawdlivPKiNaTSEQaab0hfQS26yT_iF1v_fu9AIHXuLaxcWjS1xP5dbZLcfVolQPKI9C8I1y2gKcd8JDK0vHvxm_y7wkZcSlUO6R-OYnJjrzsvxOkLpvhEJI_9HBr-nswrGCPn3kiKqpz_dUWvk9s_LihvwKMB7fBAtq-UKbRtPgkAb1l1wycv4thGG5oTmBu1ns85lVUt-dMHB6ArYzgK"/>
+<img alt="Hospital Logo 3" class="h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALKMv1GdmJHjP433FFf1T2d7C2SfVeXoUuCy33ErPY05VFdJpO6p3kwL31_rCa96rRZkv6mM2puCR9GnK3u-yD4iul6mVeFrM_mn_B1qlpcMWXuAGGErkAGnSxt57at9jg8GWGRpLoVSynnv6OjinV9HMJre_hI0G5cNIMJz4QFB0TyZu4qorWm9eRSJEoAfR5QRkLUr74BFOqeoKp9goaz9o18EKQWYpqIaQp_8oYWa60tDn8NjdpsmwKTvxuiPTEHXEzMUw5dzgj"/>
+</div>
+</div>
+</section>
+</main>
+<script>
+        const formFieldsContainer = document.getElementById('form-fields-container');
+        const roleDonor = document.getElementById('role-donor');
+        const roleRequester = document.getElementById('role-requester');
+        const roleInput = document.getElementById('role-input');
+        const latitudeInput = document.getElementById('latitude-input');
+        const longitudeInput = document.getElementById('longitude-input');
+        const locationButton = document.getElementById('get-location-btn');
+        const locationStatus = document.getElementById('location-status');
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+
+        const donorFields = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Full Name</label>
+                    <input name="full_name" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="John Doe" type="text"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Email Address</label>
+                    <input name="email" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="john@example.com" type="email"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Phone Number</label>
+                    <input name="phone_number" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Blood Group</label>
+                    <select name="blood_type" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none appearance-none">
+                        <option disabled selected value="">Select Group</option>
+                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Date of Birth</label>
+                    <input name="date_of_birth" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" type="date"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Age</label>
+                    <input name="age" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="25" type="number"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Weight (kg)</label>
+                    <input name="weight_kg" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="70" type="number"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Gender</label>
+                    <select name="gender" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none appearance-none">
+                        <option disabled selected value="">Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+        `;
+
+        const requesterFields = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Organization Name</label>
+                    <input name="organization_name" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="City Hospital" type="text"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Email Address</label>
+                    <input name="email" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="contact@hospital.com" type="email"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Phone No</label>
+                    <input name="phone_number" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label text-sm font-semibold text-on-surface-variant">Organization Type</label>
+                    <select name="organization_type" required class="w-full px-4 py-3 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg transition-all outline-none appearance-none">
+                        <option disabled selected value="">Select Type</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="blood_bank">Blood Bank</option>
+                    </select>
+                </div>
+            </div>
+        `;
+
+        function selectRole(role) {
+            // Update UI
+            if (role === 'donor') {
+                roleInput.value = 'donor';
+                roleDonor.classList.add('active-role');
+                roleRequester.classList.remove('active-role');
+                
+                document.querySelector('.donor-indicator').classList.remove('hidden');
+                document.querySelector('.donor-indicator').classList.add('flex');
+                document.querySelector('.donor-default').classList.add('hidden');
+                document.querySelector('.donor-default').classList.remove('flex');
+                
+                document.querySelector('.requester-indicator').classList.add('hidden');
+                document.querySelector('.requester-indicator').classList.remove('flex');
+                document.querySelector('.requester-default').classList.remove('hidden');
+                document.querySelector('.requester-default').classList.add('flex');
+
+                formFieldsContainer.innerHTML = donorFields;
+                formTitle.textContent = "Complete your profile";
+                formSubtitle.textContent = "Fill in the clinical details to join the VitalPulse network.";
+            } else {
+                roleInput.value = 'requester';
+                roleRequester.classList.add('active-role');
+                roleDonor.classList.remove('active-role');
+
+                document.querySelector('.requester-indicator').classList.remove('hidden');
+                document.querySelector('.requester-indicator').classList.add('flex');
+                document.querySelector('.requester-default').classList.add('hidden');
+                document.querySelector('.requester-default').classList.remove('flex');
+
+                document.querySelector('.donor-indicator').classList.add('hidden');
+                document.querySelector('.donor-indicator').classList.remove('flex');
+                document.querySelector('.donor-default').classList.remove('hidden');
+                document.querySelector('.donor-default').classList.add('flex');
+
+                formFieldsContainer.innerHTML = requesterFields;
+                formTitle.textContent = "Organization Details";
+                formSubtitle.textContent = "Register your facility to start requesting life-saving matches.";
+            }
+        }
+
+        // Initialize default view
+        selectRole('donor');
+
+        locationButton.addEventListener('click', function () {
+            if (!navigator.geolocation) {
+                locationStatus.textContent = 'Geolocation is not supported in your browser.';
+                return;
+            }
+            locationStatus.textContent = 'Capturing location...';
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    latitudeInput.value = position.coords.latitude.toFixed(6);
+                    longitudeInput.value = position.coords.longitude.toFixed(6);
+                    locationStatus.textContent = `Location captured: ${latitudeInput.value}, ${longitudeInput.value}`;
+                },
+                function (error) {
+                    locationStatus.textContent = `Location capture failed: ${error.message}`;
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        });
+    </script>
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Live Donor Network</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<style>
+  .map-card{transition:transform .2s ease,box-shadow .2s ease}
+  .map-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(76,86,175,.45)}
+  .leaflet-control-attribution{display:none!important}
+</style>
+</head>
+<body class="bg-[#f8f9fb] text-[#191c1e] h-screen overflow-hidden">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-6 py-4 grid grid-cols-3 items-center">
+    <span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+    <div class="text-center text-3xl font-black" style="font-family:Inter,sans-serif">Live Donor Network</div>
+    <a href="{% url 'home' %}" class="justify-self-end bg-[#af101a] text-white px-4 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition">Back to Main Menu</a>
+  </div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-5 h-[calc(100vh-88px)]">
+  <section class="bg-white rounded-3xl border border-gray-200 shadow-sm p-4 md:p-5 h-full">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-0 h-full">
+      <div class="lg:col-span-3 pr-0 lg:pr-5">
+        <div id="public-donor-map" class="h-full rounded-2xl overflow-hidden border border-gray-200"></div>
+      </div>
+      <aside class="lg:col-span-1 lg:border-l border-gray-200 lg:pl-5 mt-4 lg:mt-0 h-full flex flex-col min-h-0">
+        <h3 class="text-2xl font-bold mb-4" style="font-family:Inter,sans-serif">Nearby Donors</h3>
+        <div class="space-y-3 flex-1 min-h-0 overflow-y-auto pr-1">
+          {% for donor in donor_locations %}
+          <div class="map-card bg-[#f2f4f6] border border-gray-200 rounded-2xl p-4 cursor-pointer donor-card" data-lat="{{ donor.latitude }}" data-lng="{{ donor.longitude }}">
+            <p class="font-extrabold text-lg">{{ donor.full_name }}</p>
+            <p class="text-xs text-gray-600 font-semibold">Type {{ donor.blood_type }}{% if donor.distance_km is not None %} • {{ donor.distance_km }} km{% endif %}</p>
+            <p class="text-sm text-gray-700 mt-2">Age: {{ donor.age }} • Weight: {{ donor.weight_kg }} kg</p>
+            <p class="text-sm text-gray-700">Phone: {{ donor.phone }}</p>
+            <p class="text-sm text-gray-700">Email: {{ donor.email }}</p>
+          </div>
+          {% empty %}
+          <div class="bg-[#f2f4f6] rounded-2xl p-4 text-sm text-gray-600">No online and eligible donors found.</div>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+{{ donor_locations|json_script:"public-donor-data" }}
+{{ map_center|json_script:"public-donor-center-data" }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const donors = JSON.parse(document.getElementById("public-donor-data").textContent);
+const center = JSON.parse(document.getElementById("public-donor-center-data").textContent);
+const map = L.map("public-donor-map", { attributionControl: false });
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { subdomains: "abcd" }).addTo(map);
+map.setView([center.lat, center.lng], 11);
+L.circleMarker([center.lat, center.lng], { radius: 7, color: "#4c56af", fillColor: "#4c56af", fillOpacity: 1 }).addTo(map).bindPopup("<strong>Your selected location</strong>");
+const markerMap = {};
+donors.forEach((donor) => {
+  const marker = L.circleMarker([donor.latitude, donor.longitude], { radius: 8, color: "#af101a", fillColor: "#af101a", fillOpacity: 0.95 }).addTo(map);
+  marker.bindPopup(`<div style="min-width:230px"><div style="font-weight:800">${donor.full_name}</div><div style="font-size:12px;color:#5b403d">Blood Type: ${donor.blood_type}</div><div style="font-size:13px">Phone: ${donor.phone}</div><div style="font-size:13px">Email: ${donor.email}</div></div>`);
+  markerMap[`${donor.latitude},${donor.longitude}`] = marker;
+});
+document.querySelectorAll(".donor-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    const lat = card.dataset.lat;
+    const lng = card.dataset.lng;
+    map.setView([parseFloat(lat), parseFloat(lng)], 14);
+    const marker = markerMap[`${lat},${lng}`];
+    if (marker) marker.openPopup();
+  });
+});
+</script>
+</body></html>

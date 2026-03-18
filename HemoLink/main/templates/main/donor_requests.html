@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Donor Requests</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config={theme:{extend:{colors:{surface:"#f8f9fb","on-surface":"#191c1e","surface-container-low":"#f2f4f6","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3e5","primary":"#af101a","on-primary":"#ffffff","on-surface-variant":"#5b403d","background":"#f8f9fb","on-background":"#191c1e","secondary-container":"#959efd","on-secondary-container":"#27308a"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}body{font-family:'Inter',sans-serif;}h1,h2,h3,.font-headline{font-family:'Inter',sans-serif;}.request-card{transition:transform .2s ease,box-shadow .2s ease}.request-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(76,86,175,.35)}</style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<aside class="hidden md:flex flex-col gap-y-2 py-8 pr-4 h-screen w-72 fixed left-0 top-0 bg-surface-container-low z-40">
+<div class="px-8 mb-10"><span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span><p class="text-xs font-semibold text-on-surface-variant tracking-wider uppercase opacity-70">Medical Network</p></div>
+<nav class="flex flex-col gap-y-1">
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donordashboard' %}"><span class="material-symbols-outlined">grid_view</span><span class="font-manrope text-base font-medium">Dashboard</span></a>
+<a class="text-primary font-bold bg-surface-container-highest rounded-r-full py-3 px-6 mr-4 flex items-center gap-4 transition-all duration-200 translate-x-1" href="{% url 'donor_requests' %}"><span class="material-symbols-outlined">bloodtype</span><span class="font-manrope text-base font-medium">Requests</span></a>
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donor_inbox' %}"><span class="material-symbols-outlined">mail</span><span class="font-manrope text-base font-medium">Inbox</span></a>
+</nav>
+</aside>
+<div class="flex-1 md:ml-72 p-8">
+<h2 class="text-3xl font-headline font-black mb-6">My Requests</h2>
+<div class="space-y-4">
+{% for assigned in assigned_matches %}
+<div class="request-card bg-surface-container-lowest rounded-2xl p-6 border border-surface-container-high">
+<p class="font-bold text-on-surface text-lg">{{ assigned.blood_request.requester.organization_name }}</p>
+<p class="text-sm text-on-surface-variant mt-1">Required Blood: <span class="font-semibold">{{ assigned.blood_request.blood_type }}</span></p>
+<p class="text-sm text-on-surface-variant">Requester Coordinates: {% if assigned.blood_request.requester.user_profile.latitude and assigned.blood_request.requester.user_profile.longitude %}{{ assigned.blood_request.requester.user_profile.latitude }}, {{ assigned.blood_request.requester.user_profile.longitude }}{% else %}N/A{% endif %}</p>
+{% if assigned.blood_request.status != 'fulfilled' and assigned.blood_request.requester.user_profile.latitude and assigned.blood_request.requester.user_profile.longitude %}
+<a class="inline-block mt-3 bg-primary text-on-primary px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition" href="https://www.google.com/maps?q={{ assigned.blood_request.requester.user_profile.latitude }},{{ assigned.blood_request.requester.user_profile.longitude }}" rel="noopener noreferrer" target="_blank">Open in Google Maps</a>
+{% endif %}
+<span class="inline-block mt-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide {% if assigned.blood_request.status == 'fulfilled' %}bg-green-100 text-green-800{% else %}bg-secondary-container text-on-secondary-container{% endif %}">{{ assigned.blood_request.status|title }}</span>
+</div>
+{% empty %}
+<div class="bg-surface-container-lowest rounded-2xl p-6 text-on-surface-variant">No selected requests yet.</div>
+{% endfor %}
+</div>
+</div>
+</body></html>

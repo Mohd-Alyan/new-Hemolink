@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Live Donor Network</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  body{font-family:'Inter',sans-serif}
+  h1,h2,h3,.font-headline{font-family:'Inter',sans-serif}
+  .donor-card{transition:transform .2s ease, box-shadow .2s ease}
+  .donor-card:hover{transform:translateY(-2px);box-shadow:0 10px 25px -10px rgba(175,16,26,.25)}
+  .leaflet-popup-content-wrapper{border-radius:14px;background:#fff;box-shadow:0 20px 30px -14px rgba(0,0,0,.25)}
+  .leaflet-popup-content{margin:12px 14px}
+  .leaflet-control-attribution{display:none!important}
+</style>
+</head>
+<body class="bg-[#f8f9fb] text-[#191c1e] h-screen overflow-hidden">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-6 py-4 grid grid-cols-3 items-center">
+    <div>
+      <span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Medical Network</p>
+    </div>
+    <div class="text-center text-3xl font-headline font-black">Live Donor Network</div>
+    <a href="{% url 'requestordashboard' %}" class="justify-self-end bg-[#af101a] text-white px-4 py-2 rounded-xl font-bold text-sm inline-flex items-center gap-1.5 hover:opacity-90 transition whitespace-nowrap">
+      <span class="material-symbols-outlined text-base">arrow_back</span>
+      Back to Dashboard
+    </a>
+  </div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-5 h-[calc(100vh-88px)]">
+  <section class="bg-white rounded-3xl border border-gray-200 shadow-sm p-4 md:p-5 h-full">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-0 h-full">
+      <div class="lg:col-span-3 pr-0 lg:pr-5">
+        <div id="donor-network-map" class="h-full rounded-2xl overflow-hidden border border-gray-200"></div>
+      </div>
+      <aside class="lg:col-span-1 lg:border-l border-gray-200 lg:pl-5 mt-4 lg:mt-0 h-full flex flex-col min-h-0">
+        <h3 class="font-headline text-2xl font-bold mb-4">Nearest Donors</h3>
+        <div class="space-y-3 flex-1 min-h-0 overflow-y-auto pr-1">
+          {% for donor in donor_locations %}
+          <div class="donor-card bg-[#f2f4f6] border border-gray-200 rounded-2xl p-4 cursor-pointer" data-lat="{{ donor.latitude }}" data-lng="{{ donor.longitude }}">
+            <p class="font-extrabold text-lg">{{ donor.full_name }}</p>
+            <p class="text-xs text-gray-600 font-semibold">Type {{ donor.blood_type }}{% if donor.distance_km is not None %} • {{ donor.distance_km }} km{% endif %}</p>
+            <p class="text-sm text-gray-700 mt-2">Age: {{ donor.age }} • Weight: {{ donor.weight_kg }} kg</p>
+            <p class="text-sm text-gray-700">Phone: {{ donor.phone }}</p>
+            <p class="text-sm text-gray-700">Email: {{ donor.email }}</p>
+          </div>
+          {% empty %}
+          <div class="bg-[#f2f4f6] rounded-2xl p-4 text-sm text-gray-600">No online and eligible donors with coordinates found.</div>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+{{ donor_locations|json_script:"donor-network-data" }}
+{{ map_center|json_script:"donor-network-center-data" }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const donors = JSON.parse(document.getElementById("donor-network-data").textContent);
+const center = JSON.parse(document.getElementById("donor-network-center-data").textContent);
+const map = L.map("donor-network-map", { attributionControl: false });
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { subdomains: "abcd" }).addTo(map);
+map.setView([center.lat, center.lng], 11);
+const markerMap = {};
+L.circleMarker([center.lat, center.lng], { radius: 7, color: "#4c56af", fillColor: "#4c56af", fillOpacity: 1 }).addTo(map).bindPopup("<strong>{{ requester_org.organization_name|escapejs }}</strong>");
+donors.forEach((donor) => {
+  const marker = L.circleMarker([donor.latitude, donor.longitude], { radius: 8, color: "#af101a", fillColor: "#af101a", fillOpacity: 0.95 }).addTo(map);
+  marker.bindPopup(
+    `<div style="min-width:240px;line-height:1.45">
+      <div style="font-weight:800;font-size:16px;margin-bottom:3px">${donor.full_name}</div>
+      <div style="font-size:12px;color:#5b403d;margin-bottom:6px">Blood Type: ${donor.blood_type}</div>
+      <div style="font-size:13px">Age: ${donor.age} • Weight: ${donor.weight_kg} kg</div>
+      <div style="font-size:13px">Phone: ${donor.phone}</div>
+      <div style="font-size:13px">Email: ${donor.email}</div>
+    </div>`
+  );
+  markerMap[`${donor.latitude},${donor.longitude}`] = marker;
+});
+document.querySelectorAll(".donor-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    const lat = card.dataset.lat;
+    const lng = card.dataset.lng;
+    map.setView([parseFloat(lat), parseFloat(lng)], 14);
+    const marker = markerMap[`${lat},${lng}`];
+    if (marker) marker.openPopup();
+  });
+});
+</script>
+</body></html>

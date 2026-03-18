@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VitalSource Network | Medical Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#e0e3e5",
+              "outline-variant": "#e4beba",
+              "on-tertiary-container": "#e9f7ff",
+              "primary": "#af101a",
+              "on-primary": "#ffffff",
+              "secondary-fixed-dim": "#bdc2ff",
+              "error": "#ba1a1a",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary-fixed-variant": "#354a53",
+              "on-primary-fixed-variant": "#930010",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed": "#000767",
+              "on-secondary-container": "#27308a",
+              "surface": "#f8f9fb",
+              "surface-bright": "#f8f9fb",
+              "on-surface": "#191c1e",
+              "surface-dim": "#d8dadc",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#ffdad6",
+              "surface-container-highest": "#e0e3e5",
+              "on-tertiary-fixed": "#071e27",
+              "secondary-fixed": "#e0e0ff",
+              "on-error": "#ffffff",
+              "background": "#f8f9fb",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e6e8ea",
+              "primary-fixed-dim": "#ffb3ac",
+              "tertiary-fixed-dim": "#b4cad6",
+              "secondary": "#4c56af",
+              "inverse-on-surface": "#eff1f3",
+              "primary-container": "#d32f2f",
+              "on-background": "#191c1e",
+              "tertiary": "#455b65",
+              "outline": "#8f6f6c",
+              "inverse-surface": "#2d3133",
+              "secondary-container": "#959efd",
+              "tertiary-fixed": "#cfe6f2",
+              "on-primary-fixed": "#410003",
+              "on-primary-container": "#fff2f0",
+              "tertiary-container": "#5e737d",
+              "on-error-container": "#93000a",
+              "surface-container": "#eceef0",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#ba1a20",
+              "on-surface-variant": "#5b403d",
+              "on-secondary-fixed-variant": "#343d96",
+              "inverse-primary": "#ffb3ac"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body { font-family: 'Inter', sans-serif; }
+      h1, h2, h3, .font-headline { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col gap-y-2 py-8 pr-4 h-screen w-72 fixed left-0 top-0 bg-surface-container-low z-40">
+<div class="px-8 mb-10">
+<span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+<p class="text-xs font-semibold text-on-surface-variant tracking-wider uppercase opacity-70">Medical Network</p>
+</div>
+<nav class="flex flex-col gap-y-1">
+<!-- Dashboard (Active) -->
+<a class="text-primary font-bold bg-surface-container-highest rounded-r-full py-3 px-6 mr-4 flex items-center gap-4 transition-all duration-200 translate-x-1" href="{% url 'donordashboard' %}">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-manrope text-base font-medium">Dashboard</span>
+</a>
+<!-- Requests -->
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donor_requests' %}">
+<span class="material-symbols-outlined" data-icon="bloodtype">bloodtype</span>
+<span class="font-manrope text-base font-medium">Requests</span>
+</a>
+<!-- Inbox -->
+<a class="text-on-surface-variant py-3 px-6 hover:text-on-surface hover:bg-surface-container-lowest rounded-r-full transition-all duration-200 flex items-center gap-4" href="{% url 'donor_inbox' %}">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span class="font-manrope text-base font-medium">Inbox</span>
+</a>
+</nav>
+<div class="mt-auto px-6">
+</div>
+</aside>
+<div class="flex-1 md:ml-72 flex flex-col">
+<!-- TopNavBar Component -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-surface/95 backdrop-blur border-b border-surface-container-high docked full-width top-0 z-50 sticky">
+<div class="flex items-center gap-4 md:hidden">
+<span class="material-symbols-outlined text-primary">menu</span>
+<span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+</div>
+<div class="hidden md:block">
+<span class="font-manrope text-sm font-semibold tracking-wide text-on-surface-variant">Welcome back, <span class="text-on-surface">{{ donor_profile.full_name }}</span></span>
+</div>
+<div class="flex items-center gap-6">
+<!-- Availability Toggle -->
+<form action="{% url 'toggle_donor_availability' %}" method="post">
+{% csrf_token %}
+<button class="flex items-center bg-surface-container-low rounded-full px-4 py-1.5 gap-3 hover:bg-surface-container-highest transition" type="submit">
+<div class="w-2.5 h-2.5 {% if donor_online %}bg-green-500 animate-pulse{% else %}bg-gray-400{% endif %} rounded-full"></div>
+<span class="font-manrope text-sm font-semibold tracking-wide {% if donor_online %}text-primary{% else %}text-on-surface-variant{% endif %}">{% if donor_online %}Online{% else %}Offline{% endif %}</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">sync</span>
+</button>
+</form>
+<div class="flex items-center gap-4 relative">
+
+<button class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border-2 border-primary/10" id="profile-menu-btn" type="button">
+<img alt="Donor Coordinator Profile" class="w-full h-full object-cover" data-alt="Portrait of a medical professional in white coat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUqowCCZ0b8fcwfnrj5ULY_1Jcg12otFY_bu8OgTL83epMDJJYSIn9IeWLUXVph6NBq5vB2H-uz1OmOReKwwf1ketgBg4BrHCBgixLWydusZXF9qOZSAL0byvVF3KQ1tZGhGJAVP4PPgvFNlYwm7cimkIZwOwUpNMZ3SFz6_B2hTH01coKBFt3hJwJVw0CxSUIuRT7WTPXHQYvf3AZNYqy7KLzjEc4ST7BvjklYcd9H0CKMmfJhA5Eo3Xz4UphI7zatGHBHF3P8ipM"/>
+</button>
+<div class="hidden absolute top-14 right-0 w-72 bg-surface-container-lowest rounded-xl shadow-xl border border-surface-container-high p-4 z-50" id="profile-menu">
+<p class="font-bold text-on-surface">{{ donor_profile.full_name }}</p>
+<p class="text-xs text-on-surface-variant mt-1">{{ request.user.email }}</p>
+<div class="mt-3 text-xs space-y-1 text-on-surface-variant">
+<p><span class="font-semibold">Role:</span> {{ user_profile.role|title }}</p>
+<p><span class="font-semibold">Blood Type:</span> {{ donor_profile.blood_type }}</p>
+<p><span class="font-semibold">Phone:</span> {{ user_profile.phone_number|default:"N/A" }}</p>
+<p><span class="font-semibold">Location:</span> {% if user_profile.latitude and user_profile.longitude %}{{ user_profile.latitude }}, {{ user_profile.longitude }}{% else %}N/A{% endif %}</p>
+</div>
+<a class="mt-4 block text-center bg-primary text-on-primary px-3 py-2 rounded-lg text-sm font-bold" href="{% url 'logout' %}">Log out</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-8 space-y-8 max-w-7xl">
+{% if messages %}
+{% for message in messages %}
+<div class="rounded-xl px-4 py-3 text-sm font-semibold {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-error-container text-on-error-container{% endif %}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+<!-- Hero Grid: Status & Urgent Needs -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- My Status and Stats section (Bento Card) -->
+<section class="lg:col-span-5 bg-surface-container-lowest rounded-[2rem] p-8 space-y-8 flex flex-col justify-between overflow-hidden relative group border border-outline-variant/5">
+<div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="relative">
+<span class="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Donor Profile</span>
+<h2 class="text-4xl font-headline font-extrabold text-on-surface leading-tight">Ready to donate</h2>
+<p class="text-on-surface-variant font-body mt-2">
+{% if eligible_now %}
+Your health metrics are optimal for the next contribution.
+{% else %}
+Recovery window active. Next eligible donation date is {{ next_eligible_date|date:"M d" }}.
+{% endif %}
+</p>
+</div>
+<div class="grid grid-cols-2 gap-4 relative">
+<div class="bg-surface-container-low p-6 rounded-2xl">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<p class="text-3xl font-headline font-black text-on-surface">{{ lives_saved_count }}</p>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Lives Saved</p>
+</div>
+<div class="bg-primary p-6 rounded-2xl text-on-primary">
+<span class="material-symbols-outlined mb-2">calendar_today</span>
+<p class="text-xl font-headline font-bold">{% if next_eligible_date %}{{ next_eligible_date|date:"M d" }}{% else %}Today{% endif %}</p>
+<p class="text-xs font-medium text-white/80 uppercase tracking-tighter">Next Eligible</p>
+</div>
+</div>
+<div class="space-y-2 relative">
+
+</section>
+<!-- Urgent Requests Near You (Asymmetric List) -->
+<section class="lg:col-span-7 bg-surface-container-low rounded-[2rem] p-8">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary animate-pulse" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<h2 class="text-2xl font-headline font-bold">Urgent Requests Near You</h2>
+</div>
+<span class="text-primary font-bold text-sm">{{ request_cards|length }} Matching Requests</span>
+</div>
+<div class="space-y-4">
+{% for card in request_cards %}
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-surface-container-high flex flex-col md:flex-row md:items-center md:justify-between gap-4 transition hover:-translate-y-0.5 hover:shadow-md">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-error-container text-on-error-container rounded-xl flex flex-col items-center justify-center font-black">
+<span class="text-lg">{{ card.request.blood_type }}</span>
+<span class="text-[10px] -mt-1 uppercase">Blood</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">{{ card.request.requester.organization_name }}</h4>
+<p class="text-sm text-on-surface-variant">Units: {{ card.request.units_required }} • Priority: <span class="text-primary font-bold">{{ card.request.priority|title }}</span></p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+{% if card.match_status %}
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest text-on-surface-variant">{{ card.match_status|title }}</span>
+{% elif not eligible_now %}
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-error-container text-on-error-container">Eligible on {{ next_eligible_date|date:"M d" }}</span>
+{% else %}
+<form action="{% url 'respond_match' card.request.id %}" method="post">
+{% csrf_token %}
+<input name="action" type="hidden" value="accept"/>
+<button class="bg-primary text-on-primary px-3 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition" type="submit">Accept</button>
+</form>
+<form action="{% url 'respond_match' card.request.id %}" method="post">
+{% csrf_token %}
+<input name="action" type="hidden" value="decline"/>
+<button class="bg-surface-container-highest text-on-surface px-3 py-2 rounded-lg text-xs font-bold hover:bg-surface-container transition" type="submit">Decline</button>
+</form>
+{% endif %}
+</div>
+</div>
+{% empty %}
+<div class="bg-surface-container-lowest p-5 rounded-2xl text-on-surface-variant">No matching active requests for your blood type right now.</div>
+{% endfor %}
+</div>
+</section>
+</div>
+<!-- Lower Grid: Activities & Map -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Recent Activities feed -->
+<section class="lg:col-span-4 space-y-6">
+<h2 class="text-xl font-headline font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+                        Recent Activities
+                    </h2>
+<div class="relative pl-6 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container-highest">
+{% for activity in recent_activities %}
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-[13px] h-[13px] rounded-full bg-primary border-4 border-surface ring-2 ring-primary/20"></div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">{{ activity.blood_request.fulfilled_at|date:"M d, h:i A" }}</p>
+<h4 class="font-bold text-on-surface">Donation completed for {{ activity.blood_request.requester.organization_name }}</h4>
+<p class="text-sm text-on-surface-variant">Request #{{ activity.blood_request.id }} marked fulfilled.</p>
+</div>
+{% empty %}
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-[13px] h-[13px] rounded-full bg-surface-container-highest border-4 border-surface"></div>
+<p class="text-sm text-on-surface-variant">No donation history yet.</p>
+</div>
+{% endfor %}
+</div>
+</section>
+<!-- Blood Bank Locator (Glass/Map Card) -->
+<section class="lg:col-span-8">
+<div class="relative rounded-[2rem] overflow-hidden bg-surface-container-highest min-h-[400px] flex flex-col group">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full" id="locator-preview-map"></div>
+</div>
+<!-- Content Overlay -->
+<div class="relative z-20 mt-auto p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 backdrop-blur-md bg-white/75 border-t border-white/20">
+<div>
+<h2 class="text-3xl font-headline font-black text-on-surface">Blood Bank Locator</h2>
+<p class="text-on-surface-variant font-medium">Find the nearest certified medical facility or mobile unit.</p>
+</div>
+<a class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-3 hover:bg-primary-container transition-colors shadow-lg shadow-primary/20 whitespace-nowrap" href="{% url 'donor_locator' %}">
+<span class="material-symbols-outlined">near_me</span>
+                                Find Nearest
+                            </a>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest flex justify-around items-center py-4 z-50 border-t border-surface-container">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">bloodtype</span>
+<span class="text-[10px] font-bold">Requests</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">mail</span>
+<span class="text-[10px] font-bold">Inbox</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+{{ org_locations|json_script:"locator-preview-orgs-data" }}
+{{ map_center|json_script:"locator-preview-center-data" }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const profileBtn = document.getElementById("profile-menu-btn");
+const profileMenu = document.getElementById("profile-menu");
+if (profileBtn && profileMenu) {
+  profileBtn.addEventListener("click", function () {
+    profileMenu.classList.toggle("hidden");
+  });
+  document.addEventListener("click", function (event) {
+    if (!profileMenu.contains(event.target) && !profileBtn.contains(event.target)) {
+      profileMenu.classList.add("hidden");
+    }
+  });
+}
+const previewMapEl = document.getElementById("locator-preview-map");
+const previewOrgs = JSON.parse(document.getElementById("locator-preview-orgs-data").textContent);
+const previewCenter = JSON.parse(document.getElementById("locator-preview-center-data").textContent);
+if (previewMapEl) {
+  const previewMap = L.map("locator-preview-map", { zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, tap: false });
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { subdomains: "abcd", attribution: "&copy; OpenStreetMap contributors &copy; CARTO" }).addTo(previewMap);
+  previewMap.setView([previewCenter.lat, previewCenter.lng], 11);
+  previewOrgs.forEach((org) => {
+    L.circleMarker([org.latitude, org.longitude], { radius: 7, color: "#af101a", fillColor: "#af101a", fillOpacity: 0.9 }).addTo(previewMap);
+  });
+  if (previewCenter.lat && previewCenter.lng) {
+    L.circleMarker([previewCenter.lat, previewCenter.lng], { radius: 6, color: "#4c56af", fillColor: "#4c56af", fillOpacity: 1 }).addTo(previewMap);
+  }
+}
+</script>
+</body></html>

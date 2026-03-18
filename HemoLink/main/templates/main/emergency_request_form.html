@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Emergency Request Form</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>.action-btn{transition:transform .2s ease,box-shadow .2s ease}.action-btn:hover{transform:translateY(-1px);box-shadow:0 14px 24px -16px rgba(175,16,26,.5)}.field{transition:box-shadow .2s ease,border-color .2s ease}.field:focus{outline:none;box-shadow:0 0 0 2px rgba(175,16,26,.2)}</style>
+</head>
+<body class="bg-[#f8f9fb] text-[#191c1e] min-h-screen">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+    <span class="text-2xl font-extrabold tracking-tight text-primary">HemoLink</span>
+    <a href="{% url 'emergency_menu' %}" class="bg-[#af101a] text-white px-4 py-2 rounded-xl text-sm font-bold">Back to Main Menu</a>
+  </div>
+</header>
+<main class="max-w-5xl mx-auto px-6 py-10">
+  <div class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow">
+    <div class="mb-8">
+      <p class="text-xs font-bold uppercase tracking-widest text-[#af101a]">Urgent Broadcast</p>
+      <h2 class="text-3xl font-extrabold mt-2" style="font-family:Inter,sans-serif">Emergency Blood Request</h2>
+      <p class="text-gray-600 mt-2">Fill this form to send an urgent alert to all donors, hospitals, and blood banks.</p>
+    </div>
+    {% if error %}
+      <div class="mb-4 rounded-xl bg-red-100 text-red-700 px-4 py-3 text-sm font-semibold">{{ error }}</div>
+    {% endif %}
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+      <input id="latitude-input" name="latitude" type="hidden"/>
+      <input id="longitude-input" name="longitude" type="hidden"/>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Name</label>
+          <input class="field w-full mt-2 px-4 py-3 bg-[#f2f4f6] rounded-lg border border-transparent" name="name" required type="text" placeholder="Enter patient/contact name"/>
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Blood Type</label>
+          <select class="field w-full mt-2 px-4 py-3 bg-[#f2f4f6] rounded-lg border border-transparent" name="blood_type" required>
+            <option value="">Select blood type</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Email</label>
+          <input class="field w-full mt-2 px-4 py-3 bg-[#f2f4f6] rounded-lg border border-transparent" name="email" required type="email" placeholder="name@example.com"/>
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Phone Number</label>
+          <input class="field w-full mt-2 px-4 py-3 bg-[#f2f4f6] rounded-lg border border-transparent" name="phone_number" required type="tel" placeholder="+91-9XXXXXXXXX"/>
+        </div>
+      </div>
+      <div class="p-5 rounded-xl bg-[#f2f4f6] border border-dashed border-gray-300">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <p class="font-bold">Detect Location</p>
+            <p class="text-xs text-gray-600">Capture current coordinates for emergency routing.</p>
+          </div>
+          <button id="get-location-btn" class="action-btn bg-white border border-gray-300 px-5 py-2 rounded-lg font-bold text-sm" type="button">Get My Live Location</button>
+        </div>
+        <p class="text-xs mt-3 text-gray-600" id="location-status">Location not captured yet.</p>
+      </div>
+      <button class="action-btn w-full bg-[#af101a] text-white py-4 rounded-xl font-bold text-lg">Send Urgent Request</button>
+    </form>
+  </div>
+</main>
+<script>
+const latitudeInput = document.getElementById("latitude-input");
+const longitudeInput = document.getElementById("longitude-input");
+const locationButton = document.getElementById("get-location-btn");
+const locationStatus = document.getElementById("location-status");
+locationButton.addEventListener("click", function () {
+  if (!navigator.geolocation) {
+    locationStatus.textContent = "Geolocation is not supported in your browser.";
+    return;
+  }
+  locationStatus.textContent = "Capturing location...";
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      latitudeInput.value = position.coords.latitude.toFixed(6);
+      longitudeInput.value = position.coords.longitude.toFixed(6);
+      locationStatus.textContent = `Location captured: ${latitudeInput.value}, ${longitudeInput.value}`;
+    },
+    function (error) {
+      locationStatus.textContent = `Location capture failed: ${error.message}`;
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+});
+</script>
+</body></html>

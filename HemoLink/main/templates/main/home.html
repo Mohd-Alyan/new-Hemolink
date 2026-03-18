@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Pulse | Save Lives with Every Drop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed-dim": "#bdc2ff",
+              "on-secondary": "#ffffff",
+              "primary": "#af101a",
+              "outline": "#8f6f6c",
+              "surface-container-highest": "#e0e3e5",
+              "surface-variant": "#e0e3e5",
+              "surface-dim": "#d8dadc",
+              "secondary": "#4c56af",
+              "on-tertiary-fixed-variant": "#354a53",
+              "error": "#ba1a1a",
+              "on-secondary-container": "#27308a",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#ba1a20",
+              "surface-container-low": "#f2f4f6",
+              "tertiary": "#455b65",
+              "on-primary": "#ffffff",
+              "primary-fixed-dim": "#ffb3ac",
+              "on-primary-container": "#fff2f0",
+              "background": "#f8f9fb",
+              "on-error": "#ffffff",
+              "tertiary-container": "#5e737d",
+              "on-secondary-fixed": "#000767",
+              "inverse-surface": "#2d3133",
+              "surface": "#f8f9fb",
+              "tertiary-fixed": "#cfe6f2",
+              "outline-variant": "#e4beba",
+              "on-surface": "#191c1e",
+              "on-surface-variant": "#5b403d",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed": "#ffdad6",
+              "on-error-container": "#93000a",
+              "inverse-primary": "#ffb3ac",
+              "on-primary-fixed-variant": "#930010",
+              "primary-container": "#d32f2f",
+              "inverse-on-surface": "#eff1f3",
+              "secondary-fixed": "#e0e0ff",
+              "on-secondary-fixed-variant": "#343d96",
+              "surface-bright": "#f8f9fb",
+              "on-background": "#191c1e",
+              "secondary-container": "#959efd",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#b4cad6",
+              "on-tertiary-container": "#e9f7ff",
+              "on-tertiary-fixed": "#071e27",
+              "surface-container-high": "#e6e8ea",
+              "surface-container": "#eceef0",
+              "on-primary-fixed": "#410003"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-link {
+            border-radius: 9999px;
+            padding: 0.5rem 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            background: #eceef0;
+            color: #af101a;
+        }
+        .cta-btn {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .cta-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 24px -16px rgba(175, 16, 26, 0.55);
+        }
+        .impact-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .impact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 30px -18px rgba(76, 86, 175, 0.35);
+        }
+        .pulse-glow {
+            box-shadow: 0 0 40px -10px rgba(175, 16, 26, 0.2);
+        }
+        .hero-media-window {
+            background: transparent;
+            box-shadow: none;
+        }
+        .hero-float-card {
+            position: absolute;
+            border-radius: 0;
+            overflow: visible;
+            border: none;
+            box-shadow: none;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.28s ease;
+            will-change: transform;
+        }
+        .hero-float-card:hover {
+            box-shadow: none;
+        }
+        .hero-float-inner {
+            width: 100%;
+            height: 100%;
+            animation: heroFloat 6s ease-in-out infinite;
+        }
+        .hero-float-card:nth-child(2) .hero-float-inner { animation-delay: -1.3s; }
+        .hero-float-card:nth-child(3) .hero-float-inner { animation-delay: -2.7s; }
+        .hero-float-card:nth-child(4) .hero-float-inner { animation-delay: -4.1s; }
+        .hero-float-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transform: scale(2);
+            transform-origin: center;
+        }
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-on-scroll {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .hero-float-inner {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-lg docked full-width sticky top-0 z-50 transition-all duration-300">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<img alt="Vital Pulse" class="h-12 w-52 object-cover object-left" src="{% static 'main/logo.png' %}"/>
+
+<div class="flex items-center gap-4">
+<a href="{% url 'aboutus' %}">
+<button class="nav-link text-on-surface-variant font-semibold active:scale-95 text-sm">About Us</button>
+</a>
+<a href="{% url 'login' %}">
+<button class="nav-link text-on-surface-variant font-semibold active:scale-95">Login</button>
+</a>
+<a href="{% url 'register' %}">
+<button class="cta-btn bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold shadow-md hover:bg-primary-container active:scale-95">Register</button>
+</a>
+</div>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-8 pb-24 md:pt-12 md:pb-32">
+<div class="max-w-7xl mx-auto px-6">
+<div class="editorial-grid items-center">
+<div class="col-span-12 md:col-span-6 z-10">
+<span class="inline-block px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label text-sm font-bold mb-6">
+                            Emergency Network Active
+                        </span>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight mb-6">
+                            Save Lives with <br/><span class="text-primary">Every Drop</span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-lg mb-10 leading-relaxed">
+                            Connect with the fastest-growing medical network dedicated to seamless blood donation. Your contribution today fuels the pulse of tomorrow.
+                        </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<a href="{% url 'register' %}">
+<button class="cta-btn bg-primary text-on-primary px-8 py-4 rounded-lg font-bold text-lg flex items-center justify-center gap-2 hover:bg-primary-container active:scale-98 shadow-lg">
+                                Become a Donor
+                                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</a>
+<a class="cta-btn bg-surface-container-highest text-primary px-8 py-4 rounded-lg font-bold text-lg flex items-center justify-center gap-2 hover:bg-surface-variant active:scale-98" href="{% url 'emergency_menu' %}">
+                                Emergency Request
+                                <span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+</a>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6 relative mt-12 md:mt-0">
+<div class="relative z-10 rounded-[2rem] aspect-square hero-media-window" id="hero-float-window">
+<div class="hero-float-card left-2 top-3 w-52 h-64" data-depth="16" data-rotate="-4">
+<div class="hero-float-inner"><img alt="Medical support team" src="{% static 'main/blood1.png' %}"/></div>
+</div>
+<div class="hero-float-card right-4 top-6 w-64 h-44" data-depth="12" data-rotate="3">
+<div class="hero-float-inner"><img alt="Blood donation preparation" src="{% static 'main/blood2.png' %}"/></div>
+</div>
+<div class="hero-float-card left-5 bottom-4 w-60 h-44" data-depth="10" data-rotate="2">
+<div class="hero-float-inner"><img alt="Doctor in consultation" src="{% static 'main/blood3.png' %}"/></div>
+</div>
+<div class="hero-float-card right-4 bottom-3 w-52 h-64" data-depth="18" data-rotate="-3">
+<div class="hero-float-inner"><img alt="Emergency response care" src="{% static 'main/blood4.png' %}"/></div>
+</div>
+</div>
+<!-- Background Accents -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-secondary/10 rounded-full blur-3xl -z-10"></div>
+<div class="absolute -bottom-12 -left-12 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Our Impact Section -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="font-headline text-3xl md:text-4xl font-bold mb-4">Our Real-Time Impact</h2>
+<div class="h-1.5 w-24 bg-primary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="impact-card bg-surface-container-lowest p-10 rounded-xl">
+<div class="text-primary mb-4">
+<span class="material-symbols-outlined text-5xl" data-icon="groups">groups</span>
+</div>
+<div class="font-headline text-5xl font-extrabold mb-2">{{ registered_donors_count }}</div>
+<div class="text-on-surface-variant font-medium text-lg uppercase tracking-wider">Registered Donors</div>
+</div>
+<div class="impact-card bg-surface-container-lowest p-10 rounded-xl">
+<div class="text-primary mb-4">
+<span class="material-symbols-outlined text-5xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="font-headline text-5xl font-extrabold mb-2">{{ lives_saved_count }}</div>
+<div class="text-on-surface-variant font-medium text-lg uppercase tracking-wider">Lives Saved</div>
+</div>
+<div class="impact-card bg-surface-container-lowest p-10 rounded-xl">
+<div class="text-primary mb-4">
+<span class="material-symbols-outlined text-5xl" data-icon="apartment">apartment</span>
+</div>
+<div class="font-headline text-5xl font-extrabold mb-2">{{ linked_organizations_count }}</div>
+<div class="text-on-surface-variant font-medium text-lg uppercase tracking-wider">Hospitals Linked</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-24">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+<div class="max-w-2xl">
+<h2 class="font-headline text-4xl md:text-5xl font-bold mb-6">Simplifying Life Saving</h2>
+<p class="text-on-surface-variant text-lg">We've streamlined the donation journey so you can focus on making a difference.</p>
+</div>
+<div class="hidden md:block">
+<span class="text-primary font-bold flex items-center gap-2">
+                            Scroll to learn more
+                            <span class="material-symbols-outlined">expand_more</span>
+</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="relative">
+<div class="text-primary/10 font-headline text-9xl font-black absolute -top-16 -left-4 -z-10">01</div>
+<h3 class="font-headline text-2xl font-bold mb-4">Register</h3>
+<p class="text-on-surface-variant leading-relaxed">Create your digital donor profile in minutes. Securely store your blood type and health history.</p>
+</div>
+<div class="relative">
+<div class="text-primary/10 font-headline text-9xl font-black absolute -top-16 -left-4 -z-10">02</div>
+<h3 class="font-headline text-2xl font-bold mb-4">Find a Drive</h3>
+<p class="text-on-surface-variant leading-relaxed">Locate the nearest donation center or upcoming mobile drive through our interactive smart map.</p>
+</div>
+<div class="relative">
+<div class="text-primary/10 font-headline text-9xl font-black absolute -top-16 -left-4 -z-10">03</div>
+<h3 class="font-headline text-2xl font-bold mb-4">Donate</h3>
+<p class="text-on-surface-variant leading-relaxed">Give the gift of life to someone in need. We'll track your impact.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Donate Section -->
+<section class="py-24 bg-surface-container-high overflow-hidden">
+<div class="max-w-7xl mx-auto px-6">
+<div class="editorial-grid">
+<div class="col-span-12 md:col-span-5 relative order-2 md:order-1">
+<div class="rounded-2xl overflow-hidden shadow-2xl">
+<img alt="Care and health" class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-500" data-alt="Close up of medical donation procedure focusing on safety" src="{% static 'main/man.png' %}"/>
+</div>
+</div>
+<div class="col-span-12 md:col-span-7 flex flex-col justify-center order-1 md:order-2">
+<h2 class="font-headline text-4xl font-bold mb-8">Why Join Our Network?</h2>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">Health Benefits</h4>
+<p class="text-on-surface-variant">Regular donation helps maintain iron levels and offers a mini-physical every time you donate.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-secondary text-on-secondary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">Community Impact</h4>
+<p class="text-on-surface-variant">One single donation can save up to three lives. Your blood goes exactly where it's needed most in your area.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-surface-container-highest text-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">Track Your Journey</h4>
+<p class="text-on-surface-variant">See where your donation went and receive notifications when it's used to help a patient.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24">
+<div class="max-w-5xl mx-auto px-6 text-center bg-primary-container text-on-primary-container p-16 rounded-[2.5rem] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold mb-6 relative z-10">Ready to make an impact?</h2>
+<p class="text-xl mb-10 opacity-90 relative z-10 max-w-2xl mx-auto">Join thousands of donors who are already changing lives in their communities every single day.</p>
+<a href="{% url 'register' %}">
+<button class="bg-on-primary-container text-primary-container px-10 py-4 rounded-lg font-black text-xl hover:scale-105 transition-transform active:scale-95 shadow-xl relative z-10">
+                    Register As A Donor
+                </button>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low full-width rounded-t-[1.5rem] mt-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 px-8 py-16 max-w-7xl mx-auto">
+<div>
+<img alt="Vital Pulse" class="h-10 w-auto mb-4" src="{% static 'main/logo.png' %}"/>
+<p class="text-on-surface-variant leading-relaxed pr-8">
+                    Empowering the medical network through innovative digital coordination. Every donation is a heartbeat for someone in need.
+                </p>
+<div class="mt-8 flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary cursor-pointer hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary cursor-pointer hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-sm">mail</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<h4 class="font-headline headline-sm font-bold text-on-surface mb-6">Quick Links</h4>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Donation Centers</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Impact Stories</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Resources</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Donor FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline headline-sm font-bold text-on-surface mb-6">Support</h4>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Emergency Protocols</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+<div>
+<h4 class="font-headline headline-sm font-bold text-on-surface mb-6">Medical Support</h4>
+<div class="bg-surface-container-highest p-6 rounded-xl">
+<p class="text-sm font-bold text-primary mb-2 flex items-center gap-2 uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">emergency</span>
+                        24/7 Hotline
+                    </p>
+<p class="text-2xl font-black text-on-surface mb-1">1-800-VITAL-BP</p>
+<p class="text-on-surface-variant text-sm">Dedicated emergency blood transport coordination.</p>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 pb-12">
+<div class="h-px bg-surface-container-highest w-full mb-8"></div>
+<p class="text-on-surface-variant font-label text-sm text-center">
+                © 2026 HemoLink Medical Network. All rights reserved. Saving lives through seamless donation. created by Code Chaos
+            </p>
+</div>
+</footer>
+<script>
+const revealItems = document.querySelectorAll("section, footer, .impact-card");
+revealItems.forEach((el) => el.classList.add("reveal-on-scroll"));
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+  revealItems.forEach((el) => revealObserver.observe(el));
+} else {
+  revealItems.forEach((el) => el.classList.add("revealed"));
+}
+
+const heroFloatWindow = document.getElementById("hero-float-window");
+if (heroFloatWindow && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const floatCards = heroFloatWindow.querySelectorAll(".hero-float-card");
+  floatCards.forEach((card) => {
+    card.style.transform = `translate3d(0, 0, 0) rotate(${Number(card.dataset.rotate || 0)}deg)`;
+  });
+  heroFloatWindow.addEventListener("mousemove", (event) => {
+    const rect = heroFloatWindow.getBoundingClientRect();
+    const px = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    const py = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    floatCards.forEach((card) => {
+      const depth = Number(card.dataset.depth || 10);
+      const baseRotate = Number(card.dataset.rotate || 0);
+      const tx = px * depth;
+      const ty = py * depth * 0.7;
+      card.style.transform = `translate3d(${tx}px, ${ty}px, 0) rotate(${baseRotate + px * 2}deg)`;
+    });
+  });
+  heroFloatWindow.addEventListener("mouseleave", () => {
+    floatCards.forEach((card) => {
+      card.style.transform = `translate3d(0, 0, 0) rotate(${Number(card.dataset.rotate || 0)}deg)`;
+    });
+  });
+}
+</script>
+</body></html>

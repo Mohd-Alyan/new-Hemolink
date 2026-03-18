@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VitalSource | Status Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config={theme:{extend:{colors:{background:"#f8f9fb","on-background":"#191c1e","surface-container-low":"#f2f4f6","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3e5","surface-container-high":"#e6e8ea","primary":"#af101a","on-primary":"#ffffff","on-surface":"#191c1e","on-surface-variant":"#5b403d","secondary-container":"#959efd","on-secondary-container":"#27308a"}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>.track-card{transition:transform .2s ease,box-shadow .2s ease}.track-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(76,86,175,.35)}.donor-row{transition:background .2s ease}.donor-row:hover{background:#f8f9fb}</style>
+</head>
+<body class="bg-background text-on-background">
+<div class="flex pt-4">
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low flex flex-col pt-20 hidden lg:flex">
+<div class="px-8 mb-10"><h2 class="text-xl font-bold text-primary font-headline">Requester Portal</h2><p class="text-xs text-on-surface-variant font-manrope font-semibold tracking-wide uppercase">Blood Donation Network</p></div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requestordashboard' %}"><span class="material-symbols-outlined">dashboard</span><span class="font-manrope">Dashboard</span></a>
+<a class="flex items-center gap-4 text-primary bg-surface-container-lowest rounded-l-full ml-4 pl-4 py-3 font-bold transition-all" href="{% url 'requester_status_tracking' %}"><span class="material-symbols-outlined">timeline</span><span class="font-manrope">Status Tracking</span></a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest pl-8 py-3 transition-colors duration-300" href="{% url 'requester_inbox' %}"><span class="material-symbols-outlined">mail</span><span class="font-manrope">Inbox</span></a>
+</nav>
+</aside>
+<main class="flex-1 lg:ml-72 p-8">
+<h2 class="text-3xl font-headline font-black mb-6">Status Tracking</h2>
+<div class="space-y-4">
+{% for row in status_rows %}
+<div class="track-card bg-surface-container-low rounded-xl p-4 border border-surface-container-high">
+<p class="font-bold text-on-surface mb-3">Request #{{ row.request.id }} ({{ row.request.blood_type }})</p>
+{% for match in row.matches %}
+<div class="donor-row bg-surface-container-lowest rounded-xl p-4 mb-3 border border-surface-container-highest">
+<p class="font-semibold text-on-surface">{{ match.donor.full_name }} • {{ match.donor.blood_type }}</p>
+<p class="text-sm text-on-surface-variant">Age {{ match.donor.age }} • {{ match.donor.weight_kg }}kg • {{ match.donor.gender }}</p>
+<p class="text-sm text-on-surface-variant">Phone: {{ match.donor.user_profile.phone_number|default:"N/A" }}</p>
+<div class="mt-2 flex items-center justify-between">
+<span class="text-xs font-bold px-2 py-1 rounded uppercase tracking-wide {% if match.is_selected %}bg-green-100 text-green-800{% else %}bg-secondary-container text-on-secondary-container{% endif %}">{% if match.is_selected %}Selected{% else %}Accepted{% endif %}</span>
+{% if not match.is_selected %}
+<form action="{% url 'select_donor' match.id %}" method="post">{% csrf_token %}<button class="bg-primary text-on-primary px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-90 transition" type="submit">Accept Donor</button></form>
+{% endif %}
+</div>
+</div>
+{% empty %}
+<p class="text-sm text-on-surface-variant">No donors accepted yet.</p>
+{% endfor %}
+</div>
+{% empty %}
+<div class="bg-surface-container-low rounded-xl p-4 text-on-surface-variant">No requests available for tracking.</div>
+{% endfor %}
+</div>
+</main>
+</div>
+</body></html>
